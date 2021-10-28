@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, HTTPException
 from app.controllers.intent import IntentController
 
 from app.models.intents import DeleteIntentModel, IntentModel, ListIntentModel, ResponseIntentModel, UpdateIntentModel
@@ -12,12 +12,9 @@ router = APIRouter(
 @router.get("/", response_model=ListIntentModel, status_code=status.HTTP_200_OK)
 def list_intents():
     """
-    # Intents API
+    ## list intents API
 
     This endpoind list the intents
-
-    Return
-     -  the id
 
     """
 
@@ -30,12 +27,9 @@ def list_intents():
 @router.post("/", response_model=ResponseIntentModel, status_code=status.HTTP_201_CREATED)
 def create_intent(intent: IntentModel):
     """
-    # Intents API
+    ## Create intent API
 
     This endpoind create an intent
-
-    Return
-     -  the id
 
     """
 
@@ -48,30 +42,36 @@ def create_intent(intent: IntentModel):
 @router.put("/", response_model=IntentModel, status_code=status.HTTP_201_CREATED)
 def update_intent(intent: UpdateIntentModel):
     """
-    # Intents API
+    ## update intent API
 
     This endpoind update the intent
 
-    Return
-     -  the id
-
     """
 
-    return {"hello": "world"}
+    controller = IntentController()
+    response = controller.update_intent(intent.dict())
+
+    if response:
+        doc = controller.read_intent(intent.id)
+        return doc
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Ocurrio un error al intentar actualizar la intención")
 
 
 @router.delete("/", response_model=ResponseIntentModel, status_code=status.HTTP_200_OK)
 def delete_intent(intent: DeleteIntentModel):
     """
-    # Intents API
+    ## delete intent API
 
     This endpoind delete the intent
-
-    Return
-     -  the id
 
     """
     controller = IntentController()
     response = controller.delete_intent(intent.id)
 
-    return ResponseIntentModel(id=response)
+    if response:
+        return ResponseIntentModel(id=intent.id)
+    else:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="Ocurrio un error al intentar eliminar la intención")

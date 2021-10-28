@@ -1,4 +1,5 @@
 from uuid import uuid1
+from bson.objectid import ObjectId
 from pymongo import MongoClient
 import os
 
@@ -38,7 +39,10 @@ class MongoDB(metaclass=SingletonMeta):
     def set_collection(self, collection) -> None:
         self._collection = self._db[collection]
 
-    def read(self, filter, projection = None):
+    def read(self, id, projection = None):
+        return self._collection.find_one(filter={"_id": ObjectId(id)}, projection=projection)
+
+    def read_many(self, filter = None, projection = None):
         return self._collection.find(filter=filter, projection=projection)
 
     def create(self, payload):
@@ -49,16 +53,16 @@ class MongoDB(metaclass=SingletonMeta):
         docs = self._collection.insert_many(payload)
         return docs.inserted_ids
 
-    def update(self, query, newvalues):
-        self._collection.update_one(query, newvalues)
+    def update(self, id, newvalues):
+        self._collection.update_one({"_id": ObjectId(id)}, {"$set": newvalues})
         return True
 
     def update_many(self, query, newvalues):
         docs = self._collection.update_many(query, newvalues)
         return docs.modified_count
 
-    def delete(self, query):
-        self._collection.delete_one(query)
+    def delete(self, id):
+        self._collection.delete_one({"_id": ObjectId(id)})
         return True
 
     def delete_many(self, query):
