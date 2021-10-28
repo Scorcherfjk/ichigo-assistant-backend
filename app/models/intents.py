@@ -4,6 +4,8 @@ from enum import Enum
 # Pydantic
 from pydantic import BaseModel, Field
 
+from app.models.messages import AssistantMessageModel
+
 
 class Sentiment(Enum):
     positive = "positive"
@@ -17,9 +19,10 @@ class ResponseType(Enum):
 
 
 class IntentModel(BaseModel):
+    id: Optional[str] = Field(min_length=24, max_length=24, title="Id de la Intención")
     intent: str = Field(..., min_length=1, max_length=50,
                         title="Nombre de la Intención")
-    response: list[str] = Field(..., min_items=1,
+    response: list[AssistantMessageModel] = Field(..., min_items=1,
                                 max_items=10, title="Lista de respuestas")
     response_type: str = Field(..., title="Tipo de respuesta")
     sentiment: str = Field(..., title="Sentimiento")
@@ -28,14 +31,18 @@ class IntentModel(BaseModel):
         schema_extra = {
             "example": {
                 "intent": 'saludo',
-                "response": ["hola"],
+                "response": [{
+                    "message": "hola",
+                    "has_reaction": True,
+                    "reaction": "👍🏻"
+                }],
                 "response_type": "random",
                 "sentiment": "positive"
             }
         }
 
 class ResponseIntentModel(BaseModel):
-    id: str = Field(min_length=1, max_length=50, title="Id de la Intención")
+    id: str = Field(..., min_length=24, max_length=24, title="Id de la Intención")
 
 
 class ListIntentModel(BaseModel):
@@ -43,19 +50,19 @@ class ListIntentModel(BaseModel):
 
 
 class UpdateIntentModel(BaseModel):
-    id: str = Field(..., min_length=1, max_length=100,
+    id: str = Field(..., min_length=24, max_length=24,
                     title="Id del documento")
     intent: Optional[str] = Field(
         min_length=1, max_length=50, title="Nombre del Intención")
-    response: Optional[list[str]] = Field(
+    response: Optional[list[AssistantMessageModel]] = Field(
         min_items=1, max_items=10, title="Lista de respuestas")
-    respose_type: Optional[ResponseType] = Field(title="Tipo de respuesta")
-    sentiment: Optional[Sentiment] = Field(title="Sentimiento")
+    response_type: Optional[str] = Field(title="Tipo de respuesta")
+    sentiment: Optional[str] = Field(title="Sentimiento")
 
     class Config:
         schema_extra = {
             "example": {
-                "id": "jsfakfaslkasjldjas",
+                "id": "617947a59ed4b513dab1cfb8",
                 "intent": 'saludo',
                 "response": ["hola"],
                 "response_type": "random",
@@ -65,4 +72,4 @@ class UpdateIntentModel(BaseModel):
 
 
 class DeleteIntentModel(BaseModel):
-    id: str = Field(..., min_length=1, max_length=100, title="Id de documento")
+    id: str = Field(..., min_length=24, max_length=24, title="Id de documento")

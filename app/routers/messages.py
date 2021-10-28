@@ -17,12 +17,9 @@ def messages(message: UserMessageModel):
 
     This endpoind receive the message from the user and reply
 
-    Return
-     - Message from the NLP Model 
-
     """
 
-    controller = AssistantController(message)
-    response = controller.process()
+    controller = AssistantController()
+    response = controller.process(message)
 
     return response

@@ -5,18 +5,17 @@ from app.services.mongoDB import MongoDB
 
 class AssistantController():
 
-    def __init__(self, message):
-        self.message: UserMessageModel = message
+    def __init__(self):
         self._db = MongoDB()
-        self._db.set_collection('intents')
+        self._db.set_collection('messages')
 
-    def process(self):
+    def process(self, message: UserMessageModel):
 
         # En este punto debe llamar la modelo
         # El modelo devueve la intención
 
         # Se evalua el sentimiento del mensajes recibido
-        analysis = TextBlob(self.message.content)
+        analysis = TextBlob(message.content)
         language = analysis.detect_language()
         if language == 'en':
             analysis_ready = analysis
