@@ -2,13 +2,12 @@
 from fastapi import FastAPI
 
 from app.services.mongoDB import MongoDB
-from .routers import messages, intents, test
+from .routers import messages, intents
 
 app = FastAPI(debug=True)
 
 app.include_router(messages.router, prefix="/api")
 app.include_router(intents.router, prefix="/api")
-app.include_router(test.router)
 
 
 @app.get('/')
@@ -17,7 +16,7 @@ def home():
         "version": "0.1.0",
         "name": "Ichigo API",
         "author": "FJavier De Freitas <ScorcherFJK>",
-        "docs": "http://localhost:8000/docs"
+        "docs": "http://localhost:8000/redoc"
     }
 
 
