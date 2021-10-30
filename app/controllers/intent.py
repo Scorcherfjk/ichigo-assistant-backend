@@ -43,13 +43,13 @@ class IntentController():
 
     
     def update_intent(self, payload):
-        id = payload.pop("id")
+        doc_id = payload.pop("id")
         new_payload = dict()
         for d in payload.items():
             if d[1] is not None:
                 new_payload[d[0]] = d[1]
 
-        return self._db.update(id, new_payload)
+        return self._db.update(doc_id, new_payload)
 
     def delete_intent(self, id):
         return self._db.delete(id)
