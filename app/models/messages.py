@@ -52,7 +52,7 @@ class UserMessageModel(BaseModel):
 class AssistantMessageModel(BaseModel):
     message: str = Field(...,
                          min_length=1,
-                         max_length=100,
+                         max_length=300,
                          title="Mensaje",
                          description="Mensaje en respuesta al usuario"
                          )

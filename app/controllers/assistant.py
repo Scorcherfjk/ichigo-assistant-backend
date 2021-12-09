@@ -34,7 +34,10 @@ class AssistantController():
         # Se busca en la base de datos los mensajes que corresponden a la intención y al sentimiento.
         # la respuesta deberia ser { "intent": "", "response": ["", "", ""] response_type: "", sentiment: "" }
         dialog = self._db.read_many(
-            {"intent": {"$in": [intent, "no entiendo"]}, "sentiment": {"$in": [sentiment, "any"]}})
+            filter={"intent": {"$in": [intent, "anything_else"]}, "sentiment": {
+                "$in": [sentiment, "any"]}},
+            sort=[( "order", 1 )]
+        )
 
         for doc in dialog:
             doc_response = doc

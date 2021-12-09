@@ -45,7 +45,12 @@ class IntentModel(BaseModel):
         ...,
         title="Sentimiento",
         description="El sentimiento al que se asigna las respuestas")
-
+    order: int = Field(
+        ...,
+        min=1,
+        max=3,
+        title="Orden",
+        description="Orden de las respuestas en caso de coincidencia")
     class Config:
         use_enum_values = True
         schema_extra = {
@@ -57,7 +62,8 @@ class IntentModel(BaseModel):
                     "reaction": "👍🏻"
                 }],
                 "response_type": "random",
-                "sentiment": "positive"
+                "sentiment": "positive",
+                "order": 1
             }
         }
 
@@ -101,6 +107,12 @@ class UpdateIntentModel(BaseModel):
     sentiment: Optional[Sentiment] = Field(
         title="Sentimiento",
         description="Nuevo sentimiento asignado a la respuesta")
+    order: int = Field(
+        ...,
+        min=1,
+        max=3,
+        title="Orden",
+        description="Orden de las respuestas en caso de coincidencia")
 
     class Config:
         use_enum_values = True
@@ -114,7 +126,8 @@ class UpdateIntentModel(BaseModel):
                     "reaction": "👍🏻"
                 }],
                 "response_type": "random",
-                "sentiment": "positive"
+                "sentiment": "positive",
+                "order": 1
             }
         }
 

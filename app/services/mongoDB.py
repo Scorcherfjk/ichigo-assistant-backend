@@ -42,8 +42,8 @@ class MongoDB(metaclass=SingletonMeta):
     def read(self, id, projection = None):
         return self._collection.find_one(filter={"_id": ObjectId(id)}, projection=projection)
 
-    def read_many(self, filter = None, projection = None):
-        return self._collection.find(filter=filter, projection=projection)
+    def read_many(self, filter = None, projection = None, sort = None):
+        return self._collection.find(filter=filter, projection=projection, sort=sort)
 
     def create(self, payload):
         doc = self._collection.insert_one(payload)

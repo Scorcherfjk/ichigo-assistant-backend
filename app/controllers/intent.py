@@ -10,7 +10,7 @@ class IntentController():
 
     # Ready
     def read_many_intents(self) -> list:
-        docs = self._db.read_many()
+        docs = self._db.read_many(sort=[( "order", 1 )])
         container = []
         for doc in docs:
             container.append(IntentModel(
@@ -19,6 +19,7 @@ class IntentController():
                 response=doc['response'],
                 response_type=doc['response_type'],
                 sentiment=doc['sentiment'],
+                order=doc['order']
             ))
 
         return container
@@ -33,6 +34,7 @@ class IntentController():
                 response=doc['response'],
                 response_type=doc['response_type'],
                 sentiment=doc['sentiment'],
+                order=doc['order']
             )
         return model
         
