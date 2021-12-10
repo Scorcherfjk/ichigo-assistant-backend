@@ -1,7 +1,10 @@
+import pickle
 from textblob import TextBlob
 from app.models.messages import AssistantMessageModel, UserMessageModel
 from app.services.mongoDB import MongoDB
+from app.utils.transform import transform
 
+IchigoModel = pickle.load(open('./app/services/ml/IchigoModel.v1.pckl', 'rb'))["model"]
 
 class AssistantController():
 
@@ -13,7 +16,8 @@ class AssistantController():
 
         # En este punto debe llamar la modelo
         # El modelo devueve la intención
-        intent = message.content
+        df = transform(message.content)
+        intent = IchigoModel.predict(df)[0]
 
         # Se evalua el sentimiento del mensajes recibido
         analysis = TextBlob(message.content)
@@ -56,7 +60,7 @@ class AssistantController():
         })
 
         # Se estructura la respuesta y responde.
-        response = None
+        # response = None
         response = AssistantMessageModel(
             message=message_response["message"],
             has_reaction=message_response["has_reaction"],
