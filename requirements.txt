@@ -1,5 +1,15 @@
+# UTILS
 python-dotenv
+
+# WEB SERVER
 fastapi
 uvicorn
+
+# DATABASE
 pymongo
 dnspython
+
+# ML
+pandas
+scikit-learn
+textblob
