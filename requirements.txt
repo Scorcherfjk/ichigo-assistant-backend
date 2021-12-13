@@ -7,7 +7,6 @@ uvicorn
 
 # DATABASE
 pymongo
-dnspython
 
 # ML
 pandas
