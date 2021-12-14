@@ -1,0 +1,14 @@
+# UTILS
+python-dotenv
+
+# WEB SERVER
+fastapi
+uvicorn
+
+# DATABASE
+pymongo
+
+# ML
+pandas
+scikit-learn
+textblob
